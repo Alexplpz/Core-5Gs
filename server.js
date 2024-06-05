@@ -8,7 +8,7 @@ import fs from 'fs';
 const app = express();
 
 //IMPORTS PROPIOS
-import {extractConfig} from './setup.js'
+import {extractConfig, restartCore} from './setup.js'
 import Config from './config.js'
 
 
@@ -73,4 +73,10 @@ app.get('/configFile', function(req, res) {
 
 app.get('/metricas', function(req, res) {
   res.redirect(`http://${Metricas}`);
+});
+
+app.get('/reload', function(req, res) {
+  console.log("Reiniciando core...")
+  restartCore("amf","docker_open5gs")
+  res.sendFile(path.join(__dirname, '/webpage_files/reload.html'));
 });

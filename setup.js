@@ -5,6 +5,7 @@ import * as fs from 'fs';
 //const path = "./.env"
 import Config from './config.js'
 const path = Config.Route_ENV
+import shell from 'shelljs'
 export async function getFileContent(key, value) {
   try {
       // Leer el archivo
@@ -45,6 +46,16 @@ export async function extractConfig(){
         // Leer el archivo
         const data = await fs.promises.readFile(path, 'utf8');
         return data
+    }  catch (err) {
+        console.error(err);
+    }
+}
+
+export async function restartCore(nombreContenedor, imagenDocker){
+    try {
+        const comando = `docker run -d --name ${nombreContenedor} ${imagenDocker}`;
+        await shell.exec(comando);
+    
     }  catch (err) {
         console.error(err);
     }
