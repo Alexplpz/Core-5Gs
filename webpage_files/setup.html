@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <title>Configuración - Core 5G</title>
+    <link rel="stylesheet" href="./static/style.css">
+</head>
+<body>
+    <h1>Interfaz del core</h1>
+    <form action="/submit" method="post">
+        <label class= "textoLabel" for="OPERADOR">Operador:</label><br>
+        <input type="text" id="OPERADOR" name="OPERADOR" ><br>
+        <label class= "textoLabel" for="MNC">MNC:</label><br>
+        <input type="text" id="MNC" name="MNC" ><br>
+        <label class= "textoLabel" for="MCC">MCC:</label><br>
+        <input type="text" id="MCC" name="MCC" ><br>
+        <label class= "textoLabel" for="TAC">Tracking Area Code:</label><br>
+        <input type="text" id="TAC" name="TAC" ><br>
+        <label class= "textoLabel" for="DOCKER_HOST_IP">IP del docker:</label><br>
+        <input type="text" id="DOCKER_HOST_IP" name="DOCKER_HOST_IP" ><br>
+        <label class= "textoLabel" for="UPF_IP">UPF IP Pública:</label><br>
+        <input type="text" id="UPF_IP" name="UPF_IP" ><br>
+        <label class= "textoLabel" for="UPF_ADVERTISE_IP">UPF IP Advertise:</label><br>
+        <input type="text" id="UPF_ADVERTISE_IP" name="UPF_ADVERTISE_IP" ><br>
+        <label class= "textoLabel" for="UE_IPV4_INTERNET">Rango IPs en el siguiente formato: (192.168.100.0/24)</label><br>
+        <input type="text" id="UE_IPV4_INTERNET" name="UE_IPV4_INTERNET" ><br>
+        <input type="submit" value="Guardar">    
+      </form>
+      <footer class="footer">
+        <img src="./static/logo.png" alt="Logo">
+        <p>&copy; 2024 Digiytal S.L.U. Todos los derechos reservados.</p>
+    </footer>
+    </body>
+    
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Inicio - Core 5G</title>
+    <link rel="stylesheet" href="./static/style.css">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+
+</head>
+<body>
+    <div class="cabecera">
+        <h1>Panel de configuración del Core 5G</h1>
+        <h2>Configuración actual:</h2>
+    </div>
+        <div class="tg-wrap"><table><tbody>
+            <tr>
+                <td>Operador</td>
+                <td id="OPERADOR">1132233434</td>
+            </tr>  
+            <tr>
+                <td>MNC</td>
+                <td id="MNC">11</td>
+            </tr> 
+            <tr>
+                <td>MCC</td>
+                <td id="MCC">11</td>
+            </tr> 
+            <tr>
+                <td>TAC</td>
+                <td id="TAC">11</td>
+            </tr> 
+            <tr>
+                <td>IP de la red </td>
+                <td id="DOCKER_HOST_IP">11</td>
+            </tr> 
+            <tr>
+                <td>UPF</td>
+                <td id="UPF_IP">11</td>
+            </tr> 
+            <tr>
+                <td>UPF Advertise</td>
+                <td id="UPF_ADVERTISE_IP">11</td>
+            </tr>   
+            <tr>
+                <td>Rango IPs</td>
+                <td id="UE_IPV4_INTERNET">11</td>
+            </tr> 
+            
+        </div>
+        <div class="button-container">
+        <button class="button-3" onclick="window.location.href = '/metricas'">Ir a las metricas</button>
+        <button class="button-3" onclick="window.location.href = '/setup'">Cambiar configuración</button>
+    </div>
+
+    <script type="module" src="./changeTable.js"></script>
+    <footer style="right:0px" class="footer">
+        <img src="./static/logo.png" alt="Logo">
+        <p>&copy; 2024 Digiytal S.L.U. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
