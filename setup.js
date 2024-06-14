@@ -51,12 +51,33 @@ export async function extractConfig(){
     }
 }
 
-export async function restartCore(nombreContenedor, imagenDocker){
+export async function restartCore(){
     try {
-        const comando = `docker run -d --name ${nombreContenedor} ${imagenDocker}`;
+        const comando = `docker compose -f ${Config.Route_YAML} kill`;
+        const comando2 = `docker compose -f ${Config.Route_YAML} up -d`;
         await shell.exec(comando);
-    
+        await shell.exec(comando2);
     }  catch (err) {
         console.error(err);
     }
 }
+
+export async function offCore(){
+    try {
+        const comando = `docker compose -f ${Config.Route_YAML} kill`;
+        await shell.exec(comando);
+    }  catch (err) {
+        console.error(err);
+    }
+}
+
+
+export async function onCore(){
+    try {
+        const comando2 = `docker compose -f ${Config.Route_YAML} up -d`;
+        await shell.exec(comando2);
+    }  catch (err) {
+        console.error(err);
+    }
+}
+

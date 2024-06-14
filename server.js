@@ -6,9 +6,10 @@ import path from 'path';
 const __dirname = path.resolve();
 import fs from 'fs';
 const app = express();
+import shell from 'shelljs'
 
 //IMPORTS PROPIOS
-import {extractConfig, restartCore} from './setup.js'
+import {extractConfig, restartCore, onCore, offCore} from './setup.js'
 import Config from './config.js'
 
 
@@ -16,7 +17,7 @@ import Config from './config.js'
 const Metricas = Config.IP_Grafana
 const pathVerify = "./setupState.txt"
 const port = Config.Port;
-
+var statusCore = "off"
 
 
 app.get('/setup', function(req, res) {
@@ -29,6 +30,12 @@ app.get('/setup', function(req, res) {
 
 app.listen(port, () => {
     console.log(`Interfaz del core corriendo en ${port}`)
+    const { stdout, stderr, code } = shell.exec('docker container list', { silent: true })
+    console.log(stdout)
+    if(stdout.indexOf('amf') >= 0){
+      statusCore = "on"
+    }
+
   })
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -71,12 +78,36 @@ app.get('/configFile', function(req, res) {
   });
 });
 
+app.get('/statusCore', function(req, res) {
+  extractConfig().then(cfg => {
+    res.send(statusCore)
+  });
+});
+
 app.get('/metricas', function(req, res) {
   res.redirect(`http://${Metricas}`);
 });
 
 app.get('/reload', function(req, res) {
   console.log("Reiniciando core...")
+  statusCore = "on"
+    res.sendFile(path.join(__dirname, '/webpage_files/reload.html'));
   restartCore("amf","docker_open5gs")
-  res.sendFile(path.join(__dirname, '/webpage_files/reload.html'));
+
+});
+
+app.get('/on', function(req, res) {
+  console.log("Encendiendo core...")
+  statusCore = "on"
+  res.sendFile(path.join(__dirname, '/webpage_files/panel.html'));
+  onCore()
+
+});
+
+app.get('/off', function(req, res) {
+  console.log("Apagando core...")
+  statusCore = "off"
+  res.sendFile(path.join(__dirname, '/webpage_files/panel.html'));
+  offCore()
+
 });

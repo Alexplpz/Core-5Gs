@@ -10,7 +10,7 @@
 <body>
     <div class="cabecera">
         <h1>Panel de configuración del Core 5G</h1>
-        <h2>Configuración actual:</h2>
+        <h2 id="statusCore">Core apagado ❌ </h2>
     </div>
         <div class="tg-wrap"><table><tbody>
             <tr>
@@ -50,6 +50,9 @@
         <div class="button-container">
         <button class="button-3" onclick="window.location.href = '/metricas'">Ir a las metricas</button>
         <button class="button-3" onclick="window.location.href = '/setup'">Cambiar configuración</button>
+        <button style="background-color: green" class="button-3" onclick="window.location.href = '/on'">Encender core</button>
+        <button style="background-color: red" class="button-3"" onclick="window.location.href = '/off'">Apagar core</button>
+
     </div>
 
     <script type="module" src="./changeTable.js"></script>

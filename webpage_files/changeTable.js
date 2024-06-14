@@ -1,4 +1,5 @@
 var url = 'http://localhost:5000/configFile';
+var urlcore = 'http://localhost:5000/statusCore';
 var storedText;
 
 fetch(url)
@@ -34,3 +35,14 @@ fetch(url)
           document.getElementById(key).innerHTML = numero[1]
         }
   }
+
+  fetch(urlcore)
+  .then(function(response) {
+    response.text().then(function(text) {
+      if (text == "off") {
+        document.getElementById("statusCore").innerHTML = "Core Apagado ❌"
+      } else {
+        document.getElementById("statusCore").innerHTML = "Core Encendido ✅"
+      }
+    });
+  });
