@@ -10,7 +10,7 @@ import shell from 'shelljs'
 
 //IMPORTS PROPIOS
 import {extractConfig, extractDevices, restartCore, onCore, offCore} from './setup.js'
-import {getIMSI, prepareFile, deviceStatus} from './checks.js'
+import {getIMSI, prepareFile} from './checks.js'
 import Config from './config.js'
 
 
@@ -90,11 +90,6 @@ app.get('/statusCore', function(req, res) {
   extractConfig().then(cfg => {
     res.send(statusCore)
   });
-});
-
-app.get('/statusDevices', function(req, res) {
-  console.log(deviceStatus)
-    res.se(deviceStatus.toString())
 });
 
 app.get('/metricas', function(req, res) {

@@ -1,12 +1,11 @@
 import fs from 'fs';
 let contenidoAntiguo =""
 let UEs = 0
-let sessions = 0
 let IMSI = ""
 let IPs = ""
 let endUserData =""
 let currentCount = 0
-export let deviceStatus = 0
+
 export function extraerNumeroDeLinea(linea) {
     const regex = /\d+/;
     const match = linea.match(regex);
@@ -23,8 +22,7 @@ export function checkUES(d) {
     let numero = 0
     lines.forEach(line => {
         const finalValue = line.substring(20)
-        const values = finalValue.split('(..')[0].split('SMF-UEs')
-        //   console.log(values[1])
+        const values = splitValue(finalValue, 'SMF-UEs')
 
         if (values[1] != undefined) {
             numero = extraerNumeroDeLinea(values[1])
@@ -36,24 +34,7 @@ export function checkUES(d) {
     return numero
 }
 
-export function checkSessions(d) {
-    const lines = d.split('\n')
-    let lastline = ""
-    let numero = 0
-    lines.forEach(line => {
-        const finalValue = line.substring(20)
-        const values = finalValue.split('(..')[0].split('SMF-Sessions')
-        //   console.log(values[1])
 
-        if (values[1] != undefined) {
-        numero = extraerNumeroDeLinea(values[1])
-        } else {
-            lastline = lastline + '\n' + finalValue
-        }
-
-    })
-    return numero
-}
 
 export function checkImsi(d) {
     const lines = d.split('\n')
@@ -62,7 +43,7 @@ export function checkImsi(d) {
     lines.forEach(line => {
         const finalValue = line.substring(20)
         if (finalValue.match('APN') != null) {
-            const values = finalValue.split('(..')[0].split('IMSI')[1].split('APN')
+            const values = splitValue(finalValue,'IMSI','APN')
             imsi = values[0]
             if (values[1] != undefined) {
             } else {
@@ -81,7 +62,8 @@ export function checkIP(d) {
     lines.forEach(line => {
         const finalValue = line.substring(20)
         if (finalValue.match('APN') != null) {
-            const values = finalValue.split('(..')[0].split('IPv4')[1].split('IPv6')
+            const values = splitValue(finalValue,'IPv4','IPv6')
+            // const values = finalValue.split('(..')[0].split('IPv4')[1].split('IPv6')
             if (values[1] != undefined) {
                 IP = values[0]
             } else {
@@ -94,7 +76,6 @@ export function checkIP(d) {
 }
 setInterval(getIMSI, 1000)
 export async function getIMSI() {
-    console.log("Est")
   await fs.promises.readFile('./file.txt', 'utf8', function (err, data) {
       if (err){
           console.log(err)
@@ -104,23 +85,35 @@ export async function getIMSI() {
           if (contenidoAntiguo != d ) {
               contenidoAntiguo = d
              UEs = checkUES(d)
-             sessions = checkSessions(d) 
              IPs = checkIP(d)
              IMSI = checkImsi(d)
-             currentCount++
-            console.log("El contenido del archivo ha cambiado")
+            console.log("Cambio")
             writeDatabase()
-            deviceStatus++
-           } else {
-          console.log("El contenido del archivo es el mismo.")
-          return
-          }
+            currentCount++
+           } else return
+           
+
+
+          
   }
   )
 
 endUserData = `#${currentCount}` + '\n' + `UE: ${UEs}` + '\n' + `IP: ${IPs}` + `\n` + `IM: ${IMSI}\n`
-
 console.log(endUserData) 
+}
+
+
+
+
+function splitValue(value, toSplit, secondSplit){
+    if (secondSplit != undefined) {
+        let correctValue = value.split('(..')[0].split(toSplit)[1].split(secondSplit)
+        return correctValue
+
+    } else {
+        let correctValue = value.split('(..')[0].split(toSplit)
+        return correctValue
+    }
 }
 
 async function writeDatabase() {

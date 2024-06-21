@@ -2,6 +2,7 @@
 	"scripts": {
 		"setupn": "npm install",
 		"setupp": "pnpm install",
+		"dev": "node --watch server.js",
 		"core": "node server.js"
 	  },
 	"dependencies": {
