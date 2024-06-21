@@ -1,0 +1,5 @@
+
+/node_modules
+node_modules/.pnpm/set-function-length@1.2.2/node_modules/es-errors/eval.js
+*.CMD
+/node_modules

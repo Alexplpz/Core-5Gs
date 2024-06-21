@@ -9,7 +9,8 @@ const app = express();
 import shell from 'shelljs'
 
 //IMPORTS PROPIOS
-import {extractConfig, restartCore, onCore, offCore} from './setup.js'
+import {extractConfig, extractDevices, restartCore, onCore, offCore} from './setup.js'
+import {getIMSI, prepareFile, deviceStatus} from './checks.js'
 import Config from './config.js'
 
 
@@ -30,6 +31,7 @@ app.get('/setup', function(req, res) {
 
 app.listen(port, () => {
     console.log(`Interfaz del core corriendo en ${port}`)
+    prepareFile()
     const { stdout, stderr, code } = shell.exec('docker container list', { silent: true })
     console.log(stdout)
     if(stdout.indexOf('amf') >= 0){
@@ -78,10 +80,21 @@ app.get('/configFile', function(req, res) {
   });
 });
 
+app.get('/devicesFile', function(req, res) {
+  extractDevices().then(cfg => {
+    res.send(cfg)
+  });
+});
+
 app.get('/statusCore', function(req, res) {
   extractConfig().then(cfg => {
     res.send(statusCore)
   });
+});
+
+app.get('/statusDevices', function(req, res) {
+  console.log(deviceStatus)
+    res.se(deviceStatus.toString())
 });
 
 app.get('/metricas', function(req, res) {
@@ -110,4 +123,9 @@ app.get('/off', function(req, res) {
   res.sendFile(path.join(__dirname, '/webpage_files/panel.html'));
   offCore()
 
+});
+
+app.get('/devices', function(req, res) {
+  getIMSI()
+  res.sendFile(path.join(__dirname, '/webpage_files/devices.html'));
 });

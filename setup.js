@@ -51,6 +51,16 @@ export async function extractConfig(){
     }
 }
 
+export async function extractDevices(){
+    try {
+        // Leer el archivo
+        const data = await fs.promises.readFile('./devices.txt', 'utf8');
+        return data
+    }  catch (err) {
+        console.error(err);
+    }
+}
+
 export async function restartCore(){
     try {
         const comando = `docker compose -f ${Config.Route_YAML} kill`;
