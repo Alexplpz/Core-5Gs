@@ -3,7 +3,7 @@ let contenidoAntiguo =""
 let UEs = 0
 let IMSI = ""
 let IPs = ""
-let endUserData =""
+let endUserData = ""
 let currentCount = 0
 
 export function extraerNumeroDeLinea(linea) {
