@@ -82,7 +82,7 @@ app.get('/configFile', function(req, res) {
 
 app.get('/devicesFile', function(req, res) {
   extractDevices().then(cfg => {
-    res.send(cfg)
+    console.log(cfg)
   });
 });
 

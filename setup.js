@@ -1,11 +1,13 @@
-//const textoBuscado = "MCC"
-//const nuevoTexto = "MCC=005"
-//import shell from 'shelljs';
 import * as fs from 'fs';
-//const path = "./.env"
+import sqlite from 'sqlite3'
+const dbPath = './database.db'; // Path to the database file
+const db = new sqlite.Database(dbPath);
+
 import Config from './config.js'
 const path = Config.Route_ENV
 import shell from 'shelljs'
+
+
 export async function getFileContent(key, value) {
   try {
       // Leer el archivo
@@ -54,13 +56,18 @@ export async function extractConfig(){
 export async function extractDevices(){
     try {
         // Leer el archivo
-        const data = await fs.promises.readFile('./devices.txt', 'utf8');
-        return data
+        const query = db.prepare('SELECT * FROM devices ORDER BY id');
+        query.all((err, rows) => {
+            if (err) {
+                console.error(err);
+            } else {
+                return rows;
+            }
+        });
     }  catch (err) {
         console.error(err);
     }
 }
-
 export async function restartCore(){
     try {
         const comando = `docker compose -f ${Config.Route_YAML} kill`;

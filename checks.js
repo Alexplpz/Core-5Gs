@@ -1,10 +1,16 @@
 import fs from 'fs';
+import sqlite from 'sqlite3'
 let contenidoAntiguo =""
 let UEs = 0
 let IMSI = ""
 let IPs = ""
 let endUserData = ""
 let currentCount = 0
+const dbPath = './database.db'; // Path to the database file
+
+// Connect to the database in a physical file
+const db = new sqlite.Database(dbPath);
+
 
 export function extraerNumeroDeLinea(linea) {
     const regex = /\d+/;
@@ -99,7 +105,6 @@ export async function getIMSI() {
   )
 
 endUserData = `#${currentCount}` + '\n' + `UE: ${UEs}` + '\n' + `IP: ${IPs}` + `\n` + `IM: ${IMSI}\n`
-console.log(endUserData) 
 }
 
 
@@ -117,15 +122,7 @@ function splitValue(value, toSplit, secondSplit){
 }
 
 async function writeDatabase() {
-    await fs.promises.readFile('./devices.txt', 'utf8', function (err, data) {
-        if (err){
-            console.log(err)
-        }
-    }).then(n =>  
-        {  
-             fs.writeFileSync('./devices.txt', endUserData + n, 'utf8');
-
-    })
+    insertData(IPs, IMSI, UEs); 
 }
 
 export async function prepareFile(){
@@ -136,3 +133,14 @@ export async function prepareFile(){
         console.error(err);
     }
 }
+
+async function insertData(dbIP, dbIMSI, dbUEs) {
+    try {
+      // Insert data into the users table
+      await db.run("INSERT INTO devices (IP, IMSI, UEs) VALUES (?, ?, ?)", [dbIP, dbIMSI, dbUEs]);
+      console.log('Data inserted successfully');
+    } catch (error) {
+      console.error('Error inserting data:', error);
+    }
+}
+  
